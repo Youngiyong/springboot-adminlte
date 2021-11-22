@@ -26,7 +26,7 @@ We assume that You already installed maven and JDK 8 (minimum) on your environme
 1. Clone the repository: `git clone https://github.com/hendisantika/spring-boot-adminlte.git`
 2. Go to the folder: `cd spring-boot-adminlte`
 3. Run the app: `mvn clean spring-boot:run`
-4. Run docker: cd docker && docker-compose up
+4. Run docker: `cd docker && docker-compose up`
 5. Open Your favorite browser, then go to http://localhost:8080
 
 It is free to make changes and implementations and make the code more evolved.
