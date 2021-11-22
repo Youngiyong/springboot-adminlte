@@ -1,21 +1,24 @@
 package com.hendisantika.adminlte.service;
 
 import com.hendisantika.adminlte.dto.UserDto;
-import com.hendisantika.adminlte.dto.UserDto.RequestUser;
 import com.hendisantika.adminlte.model.UserProfiles;
+import com.hendisantika.adminlte.model.UserRole;
 import com.hendisantika.adminlte.model.Users;
 import com.hendisantika.adminlte.repository.UserProfileRepository;
 import com.hendisantika.adminlte.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -26,25 +29,36 @@ public class UserService implements UserDetailsService {
     private final UserProfileRepository userProfileRepository;
 
     @Override
-    public Users loadUserByUsername(String email) throws UsernameNotFoundException {
-        return usersRepository.findByEmail(email);
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
+        Users user =  usersRepository.findByEmail(email);
+        System.out.println(user);
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if (("admin@example.com").equals(user.getEmail())) {
+            authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority(UserRole.MEMBER.getValue()));
+        }
+
+        return new User(user.getEmail(), user.getPassword(), authorities);
     }
 
-    public Long save(UserDto.RequestUser payload) {
+    @Transactional
+    public Long save(UserDto.RequestUser payload) throws UsernameNotFoundException {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         Users user = new Users();
-        UserProfiles userProfiles = new UserProfiles();
+        UserProfiles userProfile = new UserProfiles();
+
+        userProfileRepository.save(userProfile);
 
         user.setEmail(payload.getEmail());
         user.setPassword(encoder.encode(payload.getPassword()));
-        user.setAuth(payload.getAuth());
-
+        user.setRoles(payload.getRoles());
+        user.setUserProfile(userProfile);
         usersRepository.save(user);
 
-        userProfiles.setUserId(user.getId());
-
-        userProfileRepository.save(userProfiles);
         return user.getId();
 
     }
@@ -55,11 +69,17 @@ public class UserService implements UserDetailsService {
 
     public Users findById(Long id){
         return usersRepository.findById(id).get();
+//        Users user =  usersRepository.findById(id).get();
+//        return Users.builder().email(user.getEmail())
+//                                        .auth(user.getAuth())
+//                                        .userProfile(user.getUserProfile())
+//                                        .createdAt(user.getCreatedAt());
     }
 
     public Users update(Long id, UserDto.RequestUpdateUser payload){
         Users user = usersRepository.findById(id).get();
         user.setName(payload.getName());
+        user.setUpdatedAt(LocalDateTime.now());
         usersRepository.save(user);
 
         return user;

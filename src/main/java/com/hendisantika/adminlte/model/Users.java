@@ -10,14 +10,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import sun.plugin.util.UserProfile;
+import java.util.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+
+
 
 @Data
 @NoArgsConstructor
@@ -39,11 +38,12 @@ public class Users implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "auth")
-    private String auth;
+    @Column(name = "roles")
+    private String roles;
 
-    @OneToOne(mappedBy = "user")
-    private UserProfiles userProfiles;
+    @OneToOne
+    @JoinColumn(name = "profile_id")
+    private UserProfiles userProfile;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
@@ -59,14 +59,20 @@ public class Users implements UserDetails {
 
 
     @Builder
-    public Users(String email, String password, String auth){
+    public Users(String email, String roles, String password){
         this.email = email;
         this.password = password;
-        this.auth = auth;
+        this.roles = roles;
+
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities(){
+//        Set<GrantedAuthority> roles = new HashSet<>();
+//        for (String role : roles.split(",")) {
+//            roles.add(new SimpleGrantedAuthority(role));
+//        }
+//        return roles;
         return null;
     }
 

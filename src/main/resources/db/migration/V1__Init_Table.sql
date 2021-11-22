@@ -5,7 +5,8 @@ create table users
     email      varchar(255) not null,
     name       varchar(255) null,
     password VARCHAR(255) NOT NULL,
-    auth       varchar(255) null,
+    roles       varchar(255) null,
+    profile_id INT not null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT NULL,
     deleted_at TIMESTAMP DEFAULT NULL
@@ -17,7 +18,6 @@ create table user_profiles
         primary key,
     description varchar(500) null,
     thumbnail   varchar(255) null,
-    fk_user_id         INT   not null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT NULL
 ) ENGINE = InnoDb;
@@ -61,3 +61,13 @@ VALUES (1, 'Uchiha', 'Sasuke', 'uchiha_sasuke@konohagakure.com', '2020-03-29 07:
        (19, 'Uzumaki', 'Naruto', 'uzumaki_naruto19@konohagakure.com', '2020-03-29 08:18:59'),
        (20, 'Uzumaki', 'Naruto', 'uzumaki_naruto20@konohagakure.com', '2020-03-29 08:18:59');
 
+
+INSERT INTO user_profiles(id, description, thumbnail) VALUES (1, 'hi', 'https://cdn.test.com/thumnail');
+
+INSERT INTO users(id, email, name, password, roles, profile_id)
+VALUES (1, 'youn9354@naver.com', '윤기용', '$2a$10$3MUolsky4nfLXHOgP3EHS.zRN4OM/hbgvnihP.VJdnwpdBqpbv3mC', 'ROLE_MEMBER', 1);
+
+INSERT INTO user_profiles(id, description, thumbnail) VALUES (2, 'hi', 'https://cdn.test.com/thumnail');
+
+INSERT INTO users(id, email, name, password, roles, profile_id)
+VALUES (2, 'admin@example.com', '관리자', '$2a$10$6Hn2bAmJ2BXJUsq8JkThV.3qqArTMig9DFDjEQUGIcYUuEoYQWnKq', 'ROLE_ADMIN', 2);

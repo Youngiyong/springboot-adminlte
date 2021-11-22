@@ -31,13 +31,6 @@ public class UserProfiles {
     @Column(name = "description", length = 500)
     private String description;
 
-    @Column(name = "fk_user_id")
-    private Long userId;
-
-    @OneToOne
-    @JoinColumn(name = "id")
-    private Users user;
-
     @CreatedDate
     @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
     private LocalDateTime createdAt;

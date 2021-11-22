@@ -14,7 +14,7 @@ public class UserDto {
     public static class RequestUser {
         private String email;
         private String password;
-        private String auth;
+        private String roles;
     }
 
     @Getter
