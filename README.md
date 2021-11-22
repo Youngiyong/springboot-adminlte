@@ -30,10 +30,10 @@ We assume that You already installed maven and JDK 8 (minimum) on your environme
 
 It is free to make changes and implementations and make the code more evolved.
 
-| #   | Username | Password |
+| #   | email | Password |
 | --- |:--------:| --------:|
-| 1   | sasuke    | 1234     |
-| 2   | naruto   | 1234     |
+| 1   | youn9354@naver.com    | 1234     |
+| 2   | admin@example.com   | 1234     |
 
 ## Screenshot
 
@@ -53,3 +53,10 @@ List Page
 
 ![List Page](img/list2.png "List Page")
 
+List Users Page By youn9354@naver.com
+
+![List Users Page](img/list3.png "List Users Page")
+
+List Users Page By admin@example.com
+
+![List Users Page](img/list4.png "List Users Page")
