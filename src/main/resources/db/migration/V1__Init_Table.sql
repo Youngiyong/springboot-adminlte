@@ -1,7 +1,7 @@
 create table users
 (
     id         INT  not null
-        primary key,
+        primary key AUTO_INCREMENT,
     email      varchar(255) not null,
     name       varchar(255) null,
     password VARCHAR(255) NOT NULL,
@@ -15,7 +15,7 @@ create table users
 create table user_profiles
 (
     id          INT   not null
-        primary key,
+        primary key AUTO_INCREMENT,
     description varchar(500) null,
     thumbnail   varchar(255) null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -37,6 +37,35 @@ CREATE TABLE customers
     lastname   VARCHAR(255)                        NOT NULL,
     email      VARCHAR(255)                        NOT NULL UNIQUE,
     added_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+) ENGINE = InnoDb;
+
+create table tags(
+                     id         int auto_increment     primary key,
+                     name       varchar(255)                        not null,
+                     created_at timestamp default CURRENT_TIMESTAMP not null,
+                     updated_at timestamp                           null
+) ENGINE = InnoDb;
+
+create table franchisees
+(
+    id         int auto_increment     primary key,
+    name       varchar(255)                        not null,
+    phone      varchar(30)                        not null,
+    description   varchar(2000)                     null,
+    thumbnail   varchar(200)                        not null,
+    status      TINYINT(1) default 1,
+    created_at timestamp default CURRENT_TIMESTAMP not null,
+    updated_at timestamp                           null,
+    deleted_at timestamp                           null
+) ENGINE = InnoDb;
+
+create table franchisee_tags
+(
+    id  int auto_increment     primary key,
+    franchisee_id int not null,
+    tag_id int not null,
+    created_at timestamp default CURRENT_TIMESTAMP not null,
+    updated_at timestamp                           null
 ) ENGINE = InnoDb;
 
 INSERT INTO customers (id, firstname, lastname, email, added_date)

@@ -1,6 +1,6 @@
 package com.hendisantika.adminlte.service;
 
-import com.hendisantika.adminlte.dto.UserDto;
+import com.hendisantika.adminlte.dto.Dto;
 import com.hendisantika.adminlte.model.UserProfiles;
 import com.hendisantika.adminlte.model.UserRole;
 import com.hendisantika.adminlte.model.Users;
@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if (("admin@example.com").equals(user.getEmail())) {
+        if (UserRole.ADMIN.getValue().equals(user.getRoles())) {
             authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
         } else {
             authorities.add(new SimpleGrantedAuthority(UserRole.MEMBER.getValue()));
@@ -45,7 +45,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public Long save(UserDto.RequestUser payload) throws UsernameNotFoundException {
+    public Long save(Dto.RequestUser payload) throws UsernameNotFoundException {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         Users user = new Users();
@@ -76,7 +76,7 @@ public class UserService implements UserDetailsService {
 //                                        .createdAt(user.getCreatedAt());
     }
 
-    public Users update(Long id, UserDto.RequestUpdateUser payload){
+    public Users update(Long id, Dto.RequestUpdateUser payload){
         Users user = usersRepository.findById(id).get();
         user.setName(payload.getName());
         user.setUpdatedAt(LocalDateTime.now());

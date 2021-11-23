@@ -1,6 +1,6 @@
 package com.hendisantika.adminlte.controller;
 
-import com.hendisantika.adminlte.dto.UserDto;
+import com.hendisantika.adminlte.dto.Dto;
 import com.hendisantika.adminlte.model.Users;
 import com.hendisantika.adminlte.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public UserDto.ResponseCreate createUser(@RequestBody UserDto.RequestUser payload){
-        return new UserDto.ResponseCreate(userService.save(payload), 200, "success");
+    public Dto.ResponseCreate createUser(@RequestBody Dto.RequestUser payload){
+        return new Dto.ResponseCreate(userService.save(payload), 200, "success");
     }
 
     @GetMapping
@@ -31,14 +31,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public Users updateUser(@RequestBody UserDto.RequestUpdateUser payload, @PathVariable Long id){
+    public Users updateUser(@RequestBody Dto.RequestUpdateUser payload, @PathVariable Long id){
         return userService.update(id, payload);
     }
 
     @DeleteMapping("/{id}")
-    public UserDto.BaseResponse delete(@PathVariable Long id){
+    public Dto.BaseResponse delete(@PathVariable Long id){
         userService.delete(id);
-        return new UserDto.BaseResponse(200, "success");
+        return new Dto.BaseResponse(200, "success");
     }
 
 }
